@@ -1,0 +1,113 @@
+@font-face {
+  font-family: 'Calibre';
+  src: url('/src/assets/fonts/Calibre/Calibre-Regular.woff2') format('woff2'),
+       url('/src/assets/fonts/Calibre/Calibre-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Font family */
+  --font-family-base: 'Calibre', sans-serif;
+
+  /* Desktop font sizes */
+  --font-size-h1: 74px;
+  --font-size-h2: 56px;
+  --font-size-h3: 42px;
+  --font-size-h4: 32px;
+  --font-size-h5: 24px;
+  --font-size-h6: 20px;
+
+  --font-size-text-x-large: 20px;
+  --font-size-text-large: 18px;
+  --font-size-text-regular: 16px;
+  --font-size-text-small: 14px;
+  --font-size-text-x-small: 12px;
+
+  /* Font weights - add as needed */
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+}
+
+/* Mobile overrides */
+@media (max-width: 600px) {
+  :root {
+    --font-size-h1: 56px;
+    --font-size-h2: 42px; /* Looks like h2 and h1 share the same mobile size */
+    --font-size-h3: 32px;
+    --font-size-h4: 24px;
+    --font-size-h5: 18px;
+    --font-size-h6: 16px;
+  }
+}
+
+/* Headings */
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-base);
+  margin: 0 0 var(--space-md) 0;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-base);
+  margin: 0 0 var(--space-md) 0;
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-base);
+  margin: 0 0 var(--space-md) 0;
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-base);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+h5 {
+  font-size: var(--font-size-h5);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-base);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+h6 {
+  font-size: var(--font-size-h6);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family-base);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+/* Paragraphs */
+p {
+  font-size: var(--font-size-text-regular);
+  font-weight: var(--font-weight-regular);
+  font-family: var(--font-family-base);
+  line-height: 1.6;
+  margin: 0 0 var(--space-md) 0;
+}
+
+/* Utility classes */
+.text-x-large {
+  font-size: var(--font-size-text-x-large);
+}
+
+.text-large {
+  font-size: var(--font-size-text-large);
+}
+
+.text-small {
+  font-size: var(--font-size-text-small);
+}
+
+.text-x-small {
+  font-size: var(--font-size-text-x-small);
+}
+

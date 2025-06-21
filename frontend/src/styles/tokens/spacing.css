@@ -1,0 +1,71 @@
+:root {
+  /* Base unit */
+  --space-base: 4px;
+
+  /* Desktop spacing */
+  --columns-desktop: 12;
+  --margin-desktop: 167px;
+  --gutter-desktop: 20px;
+
+  /* Mobile spacing */
+  --columns-mobile: 4;
+  --margin-mobile: 16px;
+  --gutter-mobile: 16px;
+
+  /* Scaled spacing based on base unit */
+  --space-xxs: calc(var(--space-base) * 1);   /* 4px */
+  --space-xs:  calc(var(--space-base) * 2);   /* 8px */
+  --space-sm:  calc(var(--space-base) * 3);   /* 12px */
+  --space-md:  calc(var(--space-base) * 4);   /* 16px */
+  --space-lg:  calc(var(--space-base) * 6);   /* 24px */
+  --space-xl:  calc(var(--space-base) * 8);   /* 32px */
+  --space-xxl: calc(var(--space-base) * 10);  /* 40px */
+  --space-3xl: calc(var(--space-base) * 24); /* 96px */
+}
+
+/* Mobile overrides */
+@media (max-width: 600px) {
+  :root {
+    --margin: var(--margin-mobile);
+    --gutter: var(--gutter-mobile);
+    --columns: var(--columns-mobile);
+  }
+}
+
+/* Desktop default */
+:root {
+  --margin: var(--margin-desktop);
+  --gutter: var(--gutter-desktop);
+  --columns: var(--columns-desktop);
+}
+
+/* Margin utilities */
+.m-xxs { margin: var(--space-xxs); }
+.m-xs  { margin: var(--space-xs); }
+.m-sm  { margin: var(--space-sm); }
+.m-md  { margin: var(--space-md); }
+.m-lg  { margin: var(--space-lg); }
+.m-xl  { margin: var(--space-xl); }
+.m-xxl { margin: var(--space-xxl); }
+
+/* Margin shorthand */
+.mt-xxs { margin-top: var(--space-xxs); }
+.mt-md  { margin-top: var(--space-md); }
+.mb-md  { margin-bottom: var(--space-md); }
+.ml-md  { margin-left: var(--space-md); }
+.mr-md  { margin-right: var(--space-md); }
+
+/* Padding utilities */
+.p-xxs { padding: var(--space-xxs); }
+.p-xs  { padding: var(--space-xs); }
+.p-sm  { padding: var(--space-sm); }
+.p-md  { padding: var(--space-md); }
+.p-lg  { padding: var(--space-lg); }
+.p-xl  { padding: var(--space-xl); }
+.p-xxl { padding: var(--space-xxl); }
+
+/* Padding shorthand */
+.pt-md  { padding-top: var(--space-md); }
+.pb-md  { padding-bottom: var(--space-md); }
+.pl-md  { padding-left: var(--space-md); }
+.pr-md  { padding-right: var(--space-md); }

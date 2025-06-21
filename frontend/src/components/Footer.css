@@ -1,0 +1,161 @@
+.footer {
+  width: 100vw;
+  max-width: 1512px;
+  height: 458px;
+
+  padding: var(--space-xxl) var(--margin); /* top/bottom: 80px, sides: 167px */
+  margin-inline: auto;
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-3xl); /* 96px */
+
+  box-sizing: border-box;
+
+  /* border: 2px solid red;  */
+}
+
+.footer__inner {
+  max-width: 1178px;
+  width: 100%;
+  height: 298px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
+
+  margin-inline: auto;
+
+  /* border: 2px dashed blue; */
+}
+
+.footer__logo {
+  display: flex;
+}
+
+.footer__nav {
+  width: 747px;
+  min-width: 600px;
+  max-height: 298px;
+
+  display: flex;
+  justify-content: space-between;
+
+  /* border: 2px solid red; */
+}
+
+.footer__nav-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  /* border: 2px dashed blue; */
+}
+
+.footer__nav-title {
+  color: var(--color-neutral-main);
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.footer__nav ul {
+  font-size: var(--font-size-text-x-large);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.footer__nav ul li:last-child {
+  margin-top: auto;
+}
+
+.footer__nav a {
+  color: var(--color-neutral-main);
+  text-decoration: none;
+}
+
+.footer__nav a:hover {
+  text-decoration: underline;
+}
+
+.footer__cta {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer__cta a {
+  display: inline-block;
+  transition: opacity 0.2s ease;
+}
+
+.footer__cta a:hover {
+  opacity: 0.85;
+}
+
+.footer__cta img {
+  height: auto;
+  display: block;
+  cursor: pointer;
+}
+
+/* Mobile Responsiveness */
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 64px 32px 120px 32px;
+    gap: 40px; /* gap between logo and cta */
+    height: auto;
+  }
+
+  .footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+
+    max-width: 192px;
+    width: 100%;
+    height: auto;
+    gap: 40px;
+    margin-inline: 0;
+  }
+
+  /* 👇 REORDER ELEMENTS ON MOBILE */
+  .footer__logo {
+    order: 1;
+  }
+
+  .footer__cta {
+    order: 2;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .footer__nav {
+    order: 3;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    max-height: none;
+    gap: var(--space-3xl); /* 64px between nav columns */
+  }
+
+  .footer__nav-column {
+    width: 100%;
+  }
+
+  .footer__nav ul {
+    gap: 14px;
+  }
+
+  .footer__cta img {
+    max-width: 100%;
+    height: auto;
+  }
+}

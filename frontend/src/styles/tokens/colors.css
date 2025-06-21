@@ -1,0 +1,25 @@
+:root {
+  /* Neutral colors */
+  --color-neutral: #353535; /* your main neutral */
+  --color-neutral-900: #161616;
+  --color-neutral-700: #262626;
+  --color-neutral-300: #787878;
+  --color-neutral-200: #c0c0c0;
+  --color-neutral-100: #e1e1e1;
+
+  /* Primary colors */
+  --color-primary: #ed560e;
+  --color-primary-900: #642406;
+  --color-primary-700: #b0400a;
+  --color-primary-600: #d84e0d;
+  --color-primary-300: #f38e5e;
+  --color-primary-100: #f9cbb4;
+
+  /* Secondary colors */
+  --color-secondary: #272270;
+  --color-secondary-700: #1c194c;
+  --color-secondary-300: #3931af;
+
+  /* Accent color */
+  --color-accent: #ffa000;
+}

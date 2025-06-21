@@ -1,0 +1,17 @@
+.text-h1 {
+  font-size: var(--font-size-h1);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-base);
+}
+
+.text-h2 {
+  font-size: var(--font-size-h2);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-base);
+}
+
+.text-body {
+  font-size: var(--font-size-body);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-base);
+}
