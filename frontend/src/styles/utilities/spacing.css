@@ -1,0 +1,23 @@
+/* Margin Utilities */
+.m-0  { margin: var(--spacing-0); }
+.m-1  { margin: var(--spacing-1); }
+.m-2  { margin: var(--spacing-2); }
+.m-4  { margin: var(--spacing-4); }
+.m-6  { margin: var(--spacing-6); }
+.m-8  { margin: var(--spacing-8); }
+
+/* Padding Utilities */
+.p-0  { padding: var(--spacing-0); }
+.p-1  { padding: var(--spacing-1); }
+.p-2  { padding: var(--spacing-2); }
+.p-4  { padding: var(--spacing-4); }
+.p-6  { padding: var(--spacing-6); }
+.p-8  { padding: var(--spacing-8); }
+
+/* Margin Top / Bottom */
+.mt-2 { margin-top: var(--spacing-2); }
+.mb-4 { margin-bottom: var(--spacing-4); }
+
+/* Padding Left / Right */
+.pl-2 { padding-left: var(--spacing-2); }
+.pr-4 { padding-right: var(--spacing-4); }

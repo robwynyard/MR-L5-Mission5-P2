@@ -1,0 +1,6 @@
+:root {
+  --container-max-width: 1200px;
+  --grid-columns: 12;
+  --grid-gutter: 16px;
+  --grid-margin: 16px;
+}
