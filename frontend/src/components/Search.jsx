@@ -28,8 +28,12 @@ export default function Search() {
           >
             ✕
           </button>
+
+          
         )}
       </div>
+        <p className={styles.MyLocation}>Use my current location</p>
+
     </div>
   );
 }
