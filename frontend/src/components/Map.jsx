@@ -11,7 +11,7 @@ export default function Map() {
     lat: -37.787,
     lng: 175.265
   };
-  
+
   const zStations = [
     { lat: -37.78566, lng: 175.25525, name: "Z Hamilton Truck Stop" },
     { lat: -37.78623445926755, lng: 175.25587171528898, name: "Z Frankton" },
@@ -19,8 +19,10 @@ export default function Map() {
     { lat: -37.77600, lng: 175.25300, name: "Z Pukete" }
   ];
 
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
   return (
-    <LoadScript googleMapsApiKey="AIzaSyDJ_pyfeSPCNAlLjsPvxi9W5-nGtd8_gt4">
+    <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={13}>
         {zStations.map((station, index) => (
           <Marker
