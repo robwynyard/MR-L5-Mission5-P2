@@ -1,12 +1,19 @@
 
+* {box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+
 
 .Container {
   max-width: 600px;
-  height: 211px;
+  height: 212px;
   background: linear-gradient(to right, #ED560E, #F57708, #FFA000);
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 }
 
 .SearchHeading {
@@ -14,8 +21,9 @@
   font-size: 32px;
   color: #fff;
   text-align: center;
-  padding-top: 20px;
-  font-weight: 700;
+  padding-top: 18px;
+  margin-bottom: 5.5px;
+  font-weight: 600;
 }
 
 .InputWrapper {
@@ -50,4 +58,68 @@
   cursor: pointer;
   color: #333;
   line-height: 1;
+}
+
+.MyLocation {
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #642406;
+  margin-top: 9.5px;
+  margin-bottom: 8px;
+  margin-left: -116px; /* aligns with input's left padding */
+}
+
+
+.MyLocationIcon {
+  width: 17px;
+  height: 17px;
+}
+
+.PriceToggleContainer {
+ margin-bottom: 0px;
+ margin-top: 0.5px;
+ cursor: pointer;
+}
+
+.SuggestionList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 4px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  list-style: none;
+  padding: 0;
+  overflow: hidden;
+}
+
+.SuggestionItem {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items:center;
+  gap: 10px;
+  margin-left: 2px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: 'Calibre';
+  font-size: 14px;
+  color: #787878;
+}
+
+.SuggestionIcon {
+  width: 11.2px;
+  height: 12.22px;
+  margin-right: 1.2px;
+  
+}
+
+.SuggestionItem:hover {
+  background-color: #f1f1f1;
 }

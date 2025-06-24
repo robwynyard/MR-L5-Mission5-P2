@@ -1,19 +1,24 @@
-import React from 'react';
-import Footer from './components/Footer'; // ✅ adjust path if your folder is nested
+import React from "react";
+import Footer from "./components/Footer";
 import Header from './components/Header';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Map from "./components/Map";
+import Search from "./components/Search";
+import SearchRoute from "/routes/SearchRoute";
+
 function App() {
   return (
-    <>
-      {/* Your other page content goes here */}
+    <Router>
       <div className="min-h-screen">
-        {/* More main content */}
+        <Routes>
+        </Routes>
+        <Header /> {/* ✅ Drop your header here */}
+        <Search></Search>
+        <Map />
+        <Footer /> {/* ✅ Drop your footer here */}
       </div>
-      <Header /> {/* ✅ Drop your header here */}
-      
-      {/* Main content of the page */}
-      <Footer /> {/* ✅ Drop your footer here */}
-    </>
+    </Router>
   );
 }
-
+ 
 export default App;
