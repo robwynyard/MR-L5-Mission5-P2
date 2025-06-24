@@ -4,7 +4,23 @@ margin: 0;
 padding: 0;
 }
 
+@media (min-width: 600px) {
+.Container {
+  width: 453px ;
+  position: absolute;       
+  top: 194px;                 
+  left: 362px;
+  transform: translateX(-50%);
+  z-index: 1000;              
+  height: 212px;
+  border-radius: 40px;
+  background: linear-gradient(to right, #ED560E, #F57708, #FFA000);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+}
 
 .Container {
   max-width: 600px;
