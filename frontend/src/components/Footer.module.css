@@ -11,11 +11,9 @@
   gap: var(--space-3xl); /* 96px */
 
   box-sizing: border-box;
-
-  /* border: 2px solid red;  */
 }
 
-.footer__inner {
+.footerInner {
   max-width: 1178px;
   width: 100%;
   height: 298px;
@@ -26,40 +24,34 @@
   box-sizing: border-box;
 
   margin-inline: auto;
-
-  /* border: 2px dashed blue; */
 }
 
-.footer__logo {
+.footerLogo {
   display: flex;
 }
 
-.footer__nav {
+.footerNav {
   width: 747px;
   min-width: 600px;
   max-height: 298px;
 
   display: flex;
   justify-content: space-between;
-
-  /* border: 2px solid red; */
 }
 
-.footer__nav-column {
+.footerNavColumn {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  /* border: 2px dashed blue; */
 }
 
-.footer__nav-title {
+.footerNavTitle {
   color: var(--color-neutral-main);
   flex-shrink: 0;
   margin-bottom: 10px;
 }
 
-.footer__nav ul {
+.footerNav ul {
   font-size: var(--font-size-text-x-large);
   list-style: none;
   padding: 0;
@@ -70,40 +62,38 @@
   gap: 14px;
 }
 
-.footer__nav ul li:last-child {
+.footerNav ul li:last-child {
   margin-top: auto;
 }
 
-.footer__nav a {
+.footerNav a {
   color: var(--color-neutral-main);
   text-decoration: none;
 }
 
-.footer__nav a:hover {
+.footerNav a:hover {
   text-decoration: underline;
 }
 
-.footer__cta {
+.footerCta {
   display: flex;
   justify-content: flex-end;
 }
 
-.footer__cta a {
+.footerCta a {
   display: inline-block;
   transition: opacity 0.2s ease;
 }
 
-.footer__cta a:hover {
+.footerCta a:hover {
   opacity: 0.85;
 }
 
-.footer__cta img {
+.footerCta img {
   height: auto;
   display: block;
   cursor: pointer;
 }
-
-/* Mobile Responsiveness */
 
 @media (max-width: 768px) {
   .footer {
@@ -111,11 +101,11 @@
     align-items: flex-start;
 
     padding: 64px 32px 120px 32px;
-    gap: 40px; /* gap between logo and cta */
+    gap: 40px;
     height: auto;
   }
 
-  .footer__inner {
+  .footerInner {
     flex-direction: column;
     align-items: flex-start;
 
@@ -126,35 +116,34 @@
     margin-inline: 0;
   }
 
-  /* 👇 REORDER ELEMENTS ON MOBILE */
-  .footer__logo {
+  .footerLogo {
     order: 1;
   }
 
-  .footer__cta {
+  .footerCta {
     order: 2;
     justify-content: flex-start;
     width: 100%;
   }
 
-  .footer__nav {
+  .footerNav {
     order: 3;
     flex-direction: column;
     width: 100%;
     min-width: 0;
     max-height: none;
-    gap: var(--space-3xl); /* 64px between nav columns */
+    gap: var(--space-3xl);
   }
 
-  .footer__nav-column {
+  .footerNavColumn {
     width: 100%;
   }
 
-  .footer__nav ul {
+  .footerNav ul {
     gap: 14px;
   }
 
-  .footer__cta img {
+  .footerCta img {
     max-width: 100%;
     height: auto;
   }
