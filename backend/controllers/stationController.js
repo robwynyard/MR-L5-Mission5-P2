@@ -1,4 +1,4 @@
-import Station from "../models/Station.js";
+const Station = require("../models/Station");
 
 export const getAllStations = async (req, res) => {
   try {

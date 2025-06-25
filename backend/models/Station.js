@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const stationSchema = new mongoose.Schema({
   ID: Number,
@@ -26,6 +26,6 @@ const stationSchema = new mongoose.Schema({
 });
 
 // 👇 force it to use the exact collection name from Atlas
-const Station = mongoose.model("Station", stationSchema, "stations");
+const Station = mongoose.model("Station", stationSchema, "aucklandStations");
 
-export default Station;
+module.exports = Station;

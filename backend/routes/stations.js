@@ -1,6 +1,6 @@
-import express from "express";
-import Station from "../models/Station.js";
-import haversine from "../utils/haversine.js";
+const express = require("express");
+const Station = require("../models/Station");
+const haversine = require("../utils/haversine");
 
 const router = express.Router();
 
@@ -8,8 +8,11 @@ router.get("/", async (req, res) => {
   const { fuel, open, lat, lng } = req.query;
 
   try {
-    // Fetch all stations from Atlas
+    // Fetch all stations from Atlas as Mongoose docs
     let results = await Station.find();
+
+    // Convert Mongoose docs to plain JS objects for easy manipulation
+    results = results.map(station => station.toObject());
 
     // Filter by fuel type if specified
     if (fuel) {
@@ -28,7 +31,7 @@ router.get("/", async (req, res) => {
           station.location?.lat ?? 0,
           station.location?.lng ?? 0
         );
-        return { ...station.toObject(), distance };
+        return { ...station, distance };
       });
 
       // Sort by distance ascending
@@ -49,4 +52,4 @@ router.get("/", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
