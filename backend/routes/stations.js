@@ -1,45 +1,52 @@
-const express = require("express");
-const router = express.Router();
-const stations = require("../mock/stations");
-const haversine = require("../utils/haversine");
+import express from "express";
+import Station from "../models/Station.js";
+import haversine from "../utils/haversine.js";
 
-router.get("/", (req, res) => {
+const router = express.Router();
+
+router.get("/", async (req, res) => {
   const { fuel, open, lat, lng } = req.query;
 
-  let results = [...stations];
+  try {
+    // Fetch all stations from Atlas
+    let results = await Station.find();
 
-  // Filter by fuel type
-  if (fuel) {
-    results = results.filter((station) =>
-      station.fuelPrices.hasOwnProperty(fuel)
-    );
+    // Filter by fuel type if specified
+    if (fuel) {
+      results = results.filter(station => station.fuelPrices.hasOwnProperty(fuel));
+    }
+
+    // Calculate distance if lat/lng provided
+    if (lat && lng) {
+      const userLat = parseFloat(lat);
+      const userLng = parseFloat(lng);
+
+      results = results.map(station => {
+        const distance = haversine(
+          userLat,
+          userLng,
+          station.location?.lat ?? 0,
+          station.location?.lng ?? 0
+        );
+        return { ...station.toObject(), distance };
+      });
+
+      // Sort by distance ascending
+      results.sort((a, b) => a.distance - b.distance);
+    }
+
+    // Filter by open status (mocked)
+    if (open === "true") {
+      results = results.map(station => ({ ...station, isOpen: true }));
+    } else {
+      results = results.map(station => ({ ...station, isOpen: false }));
+    }
+
+    res.json(results);
+  } catch (err) {
+    console.error("Failed to fetch stations:", err);
+    res.status(500).json({ error: "Failed to fetch stations" });
   }
-
-  // Add distance if coords provided
-  if (lat && lng) {
-    results = results.map((station) => ({
-      ...station,
-      distance: haversine(
-        parseFloat(lat),
-        parseFloat(lng),
-        station.location.lat,
-        station.location.lng
-      )
-    }));
-
-    // Sort by distance
-    results.sort((a, b) => a.distance - b.distance);
-  }
-
-  // Optional: basic open filter (mocked always true for now)
-  if (open === "true") {
-    results = results.filter((station) => true); // replace with real logic later
-    results = results.map((station) => ({ ...station, isOpen: true }));
-  } else {
-    results = results.map((station) => ({ ...station, isOpen: false }));
-  }
-
-  return res.json(results);
 });
 
-module.exports = router;
+export default router;
