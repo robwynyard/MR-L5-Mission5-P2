@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styles from "./css/Search.module.css";
 import myLocation from "../assets/atoms/icons/my_location.svg";
-import showPriceToggle from "../assets/atoms/priceToggle/show_price.svg";
+import showPriceIcon from "../assets/atoms/priceToggle/show_price.svg";
+import hidePriceIcon from "../assets/atoms/priceToggle/hide_price.svg";
+import fuelTypeIcon from "../assets/atoms/dropdown/default_fueltype.svg";
 import gasIcon from "../assets/atoms/icons/local_gas_station.svg";
 
 const stationList = [
@@ -15,6 +17,15 @@ const stationList = [
 export default function Search() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [showPrice, setShowPrice] = useState(false);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+const fuelTypes = [
+  { name: "Z91 Unleaded" },
+  { name: "ZX Premium" },
+  { name: "Z Diesel" },
+];
 
   const handleClear = () => {
     setQuery("");
@@ -89,10 +100,54 @@ export default function Search() {
         />
         Use my current location
       </p>
+<div className={`${styles.PriceToggleRow} ${showPrice ? styles.expanded : ""}`}>
+  <div
+    className={styles.PriceToggleContainer}
+    onClick={() => setShowPrice(!showPrice)}
+  >
+    <div className={styles.ToggleIconWrapper}>
+      <img
+        src={showPriceIcon}
+        alt="Show Price"
+        className={`${styles.ToggleIconImage} ${styles.ShowPriceToggle} ${!showPrice ? styles.show : styles.hide}`}
+      />
+      <img
+        src={hidePriceIcon}
+        alt="Hide Price"
+        className={`${styles.ToggleIconImage} ${styles.hidePriceToggle} ${showPrice ? styles.show : styles.hide}`}
+      />
+    </div>
+  </div>
 
-      <div className={styles.PriceToggleContainer}>
-        <img src={showPriceToggle} alt="Show Price" />
-      </div>
+  <div
+    className={`${styles.FuelTypeContainer} ${
+      showPrice ? styles.visible : styles.hidden}`}
+       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+  >
+    <img
+      src={fuelTypeIcon}
+      alt="Fuel Type"
+      className={styles.FuelTypeIcon}
+    />
+     {isDropdownOpen && (
+    <ul className={styles.FuelDropdown}>
+      {fuelTypes.map((fuel, index) => (
+        <li
+          key={index}
+          className={styles.FuelOption}
+          onClick={() => {
+            setSelectedFuelType(fuel.name);
+            setIsDropdownOpen(false);
+          }}
+        >
+          {fuel.name}
+        </li>
+      ))}
+    </ul>
+  )}
+  </div>
+</div>
+
     </div>
   );
 }
