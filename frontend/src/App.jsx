@@ -14,7 +14,6 @@ function App() {
         <Routes>
         </Routes>
         <Header /> {/* ✅ Drop your header here */}
-        <Search></Search>
         <StationSearchMap></StationSearchMap>
         <Footer /> {/* ✅ Drop your footer here */}
       </div>
