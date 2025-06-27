@@ -1,0 +1,53 @@
+.container {
+  width: 100%;
+  max-width: 453px;
+  max-height: 567px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: white;
+  border-radius: 50px;
+  overflow: scroll;
+}
+
+.filterBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+}
+
+.iconsLeft {
+  display: flex;
+  gap: 1rem;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.resultCount {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Card layout: adjust for grid or list */
+.cardList {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Optional if no results */
+.noResults {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+}
