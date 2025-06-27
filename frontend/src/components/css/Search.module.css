@@ -156,6 +156,7 @@
 /* Suggestions */
 .SuggestionList {
   position: absolute;
+   max-height: 220px; 
   top: 100%;
   left: 0;
   width: 100%;
