@@ -52,4 +52,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try{
+
+    const id = parseInt(req.params.id)
+    if(isNaN(id)) return res.status(400).json({ message: "Invalid station ID" })
+
+    const station = await Station.findOne({ ID: id })
+
+    if(!station){
+      console.log("No match found for ID:", id);
+      return res.status(404).json({ message: "Station not found" })
+    }
+
+    res.json(station)
+  } catch (err) {
+    console.error("Failed to fetch station:", err)
+    res.status(500).json({ error: "Failed to fetch station" });
+  }
+})
+
 module.exports = router;
