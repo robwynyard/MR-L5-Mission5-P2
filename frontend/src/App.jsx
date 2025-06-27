@@ -2,15 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
 import Map from "./components/Map";
 import Search from "./components/Search";
 import TestPreview from "./pages/TestPreview";
-
-import Header from "./components/Header";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Map from "./components/Map";
-import Search from "./components/Search";
 import SearchRoute from "/routes/SearchRoute";
 import StationSearchMap from "./components/StationSearchMap";
 import StationDetails from "./components/StationDetails";
@@ -29,8 +23,7 @@ function App() {
           element={
             <>
               <Header />
-              <Search />
-              <Map />
+              <StationSearchMap></StationSearchMap>
               <Footer />
             </>
           }
