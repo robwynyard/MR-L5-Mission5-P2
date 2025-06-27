@@ -14,18 +14,15 @@ app.use(express.json());
 
 
 
+// Middleware
+app.use(cors());
+app.use(express.json()); // To parse JSON bodies
+
+// Routes
 const stationRoutes = require("./routes/stations");
 app.use("/api/stations", stationRoutes);
 
 
-// -------------------------- Rob - DB Setup for Coordinates ---------------------------- //
-
-
-
-// Connect to MongoDB
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
 
 // Use the stations routes
 app.use('/api/aucklandStations', stationsRouter);
@@ -34,8 +31,16 @@ app.use('/api/aucklandStations', stationsRouter);
 // -------------------------- Basic Server Setup ---------------------------- //
 const PORT = process.env.PORT || 3000; // default to 3000 if no env var set
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Connect to MongoDB Atlas and then start server
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ Connected to MongoDB Atlas");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error("❌ MongoDB connection error:", err);
+  });
 
 module.exports = app;

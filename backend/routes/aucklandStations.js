@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Station = require('../models/aucklandStations');
+const Station = require('../models/Station');
 
 // GET all stations
 router.get('/', async (req, res) => {

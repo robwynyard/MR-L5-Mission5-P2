@@ -14,8 +14,8 @@
 
 /* Container */
 .Container {
-  max-width: 600px;
-  height: 212px;
+  max-width: 453px;
+  height: 211px;
   background: linear-gradient(to right, #ED560E, #F57708, #FFA000);
   display: flex;
   flex-direction: column;
