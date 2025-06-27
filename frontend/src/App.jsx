@@ -12,8 +12,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Map from "./components/Map";
 import Search from "./components/Search";
 import SearchRoute from "/routes/SearchRoute";
+import StationSearchMap from "./components/StationSearchMap";
 import StationDetails from "./components/StationDetails";
-
 
 function App() {
   return (
@@ -39,8 +39,7 @@ function App() {
 
       <div className="min-h-screen">
         <Header /> {/* ✅ Drop your header here */}
-        <Search></Search>
-        <Map />
+        <StationSearchMap></StationSearchMap>
         <Routes>
           <Route path="/station/:id" element={<StationDetails />} />
         </Routes>

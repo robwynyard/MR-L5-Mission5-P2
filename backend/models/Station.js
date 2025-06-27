@@ -22,7 +22,11 @@ const stationSchema = new mongoose.Schema({
     Friday: String,
     Saturday: String,
     Sunday: String,
-  }
+  },
+   location: {
+    type: { type: String },
+    coordinates: [Number]
+  },
 });
 
 // 👇 force it to use the exact collection name from Atlas
