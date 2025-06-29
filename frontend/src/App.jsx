@@ -2,50 +2,41 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-
-import Map from "./components/Map";
-import Search from "./components/Search";
-import TestPreview from "./pages/TestPreview";
-
-import Header from "./components/Header";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Map from "./components/Map";
-import Search from "./components/Search";
-import SearchRoute from "/routes/SearchRoute";
 import StationSearchMap from "./components/StationSearchMap";
 import StationDetails from "./components/StationDetails";
+import TestPreview from "./pages/TestPreview";
 
 function App() {
   return (
     <Router>
-
       <Routes>
-        {/* ✅ Preview route for testing */}
+        {/* Preview route for testing (no header/footer) */}
         <Route path="/test" element={<TestPreview />} />
 
-        {/* ✅ Landing route with full layout */}
+        {/* Landing route with header, search map, footer */}
         <Route
           path="/"
           element={
-            <>
+            <div className="min-h-screen">
               <Header />
-              <Search />
-              <Map />
+              <StationSearchMap />
               <Footer />
-            </>
+            </div>
+          }
+        />
+
+        {/* Station details route with header and footer */}
+        <Route
+          path="/station/:id"
+          element={
+            <div className="min-h-screen">
+              <Header />
+              <StationDetails />
+              <Footer />
+            </div>
           }
         />
       </Routes>
-
-      <div className="min-h-screen">
-        <Header /> {/* ✅ Drop your header here */}
-        <StationSearchMap></StationSearchMap>
-        <Routes>
-          <Route path="/station/:id" element={<StationDetails />} />
-        </Routes>
-        <Footer /> {/* ✅ Drop your footer here */}
-      </div>
-
     </Router>
   );
 }
