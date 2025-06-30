@@ -2,14 +2,17 @@
   width: 100%;
   max-width: 453px;
   max-height: 567px;
-  margin: 0 auto;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
   background-color: white;
   border-radius: 50px;
   overflow: scroll;
+  position: absolute;
+  z-index: 2;
+  top: 450px;
+  left: 130px;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
 
 .filterBar {
@@ -17,6 +20,7 @@
   justify-content: space-between;
   align-items: center;
   position: sticky;
+  margin: 20px 50px;
 }
 
 .iconsLeft {
@@ -34,7 +38,7 @@
 .resultCount {
   font-size: 0.95rem;
   color: #666;
-  margin: 0;
+  margin: 0 50px;
 }
 
 /* Card layout: adjust for grid or list */
