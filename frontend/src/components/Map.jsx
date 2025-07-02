@@ -10,7 +10,7 @@ import pinIcon from "../assets/atoms/station_pin.svg";
 import fuelPriceIcon from "../assets/atoms/fuelPins/fuel_pin_blank.svg";
 import cityMarker from "../assets/atoms/city_marker.svg";
 
-export default function Map({ center, zoom, showPrice, selectedFuelType }) {
+export default function Map({ center, zoom, showPrice, selectedFuelType, mapRef }) {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapInstance, setMapInstance] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
@@ -51,6 +51,10 @@ export default function Map({ center, zoom, showPrice, selectedFuelType }) {
           setMapLoaded(true);
           setMapInstance(map);
           setCurrentZoom(map.getZoom());
+          // FIX: Set mapRef.current!
+          if (mapRef) {
+            mapRef.current = map;
+          }
         }}
         onZoomChanged={() => {
           if (mapInstance) {
