@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import haversine from "../utils/haversine"
 import styles from "./StationDetails.module.css";
 import backArrow from "../assets/atoms/icons/arrow_back.svg";
 import close from "../assets/atoms/icons/close.svg";
@@ -14,6 +15,7 @@ export default function StationDetails() {
   const [station, setStation] = useState(null);
   const [error, setError] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null)
+  const [minimise, setMinimise] = useState(false)
 
   useEffect(() => {
     async function fetchStation() {
@@ -23,7 +25,23 @@ export default function StationDetails() {
         );
         if (!response.ok) throw new Error("Station not found");
         const data = await response.json();
-        setStation(data);
+
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const {latitude: usersLat, longitude: usersLng} = pos.coords
+            const distance = haversine(
+              usersLat,
+              usersLng,
+              data.location.coordinates[1],
+              data.location.coordinates[0],
+            )
+            setStation({...data, distance})
+          },
+          (err) => {
+            console.error("Error getting location", err)
+            setStation(data)
+          }
+        )
       } catch (err) {
         setError(err.message);
       }
@@ -35,6 +53,9 @@ export default function StationDetails() {
   if (error) return <div>Error: {error}</div>;
   if (!station) return <div>Loading...</div>;
 
+  const toggleMinimise = () => setMinimise(prev => !prev)
+  
+
   const toggleHours = () => {
     setOpenDropdown(prev => (prev === "hours" ? null : "hours"));
   } 
@@ -43,9 +64,14 @@ export default function StationDetails() {
   } 
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${minimise ? styles.minimised : ""}`}>
+
+      <div className={styles.minimise}>
+        <button className={styles.minimiseBtn} onClick={toggleMinimise}></button>
+      </div>
+
       <div className={styles.close}>
-        <button className={styles.closeBtns}>
+        <button className={`${styles.closeBtns} ${styles.backArrow}`}>
           <img src={backArrow} alt="back arrow" />
         </button>
         <button className={styles.closeBtns}>
@@ -53,7 +79,12 @@ export default function StationDetails() {
         </button>
       </div>
 
-      <h1 className={styles.title}>{station.Name}</h1>
+      <div className={styles.titleLine}>
+        <h1 className={styles.title}>{station.Name}</h1>
+        {station.distance != null &&(
+          <p className={styles.distance}>{station.distance} km</p>
+        )}
+      </div>
 
       <div className={styles.addressLine}>
         <img className={styles.pin} src={pin} alt="Location pin" />
@@ -81,7 +112,7 @@ export default function StationDetails() {
         )}
       </div>
 
-      <div className={styles.dropdown}>
+      <div className={styles.dropdown2}>
         <strong className={styles.listName}>Services</strong>
         <button className={styles.toggle} onClick={toggleServices}>
           <img

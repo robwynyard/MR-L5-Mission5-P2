@@ -1,51 +1,69 @@
-.card {
-  width: 450px;
+.card{
+  width: 390px;
   margin: 2rem auto;
   padding: 1.5rem 2rem;
   border-radius: 30px;
   background-color: #fff;
   position: absolute;
   top: 380px;
-  left: 170px;
+  left: 135px;
 }
-
+.minimise{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    display: none;
+}
+.minimiseBtn{
+    width: 40px;
+    height: 6px;
+    background-color: #C0C0C0;
+    border: none;
+    border-radius: 15px;
+}
 .close{
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
 }
-
 .closeBtns{
     background: none;
     border: none;
     cursor: pointer;
 }
-
 .closeBtns img{
     width: 18px;
     height: 18px;
 }
-
+.titleLine{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .title{
-    font-size: 40px;
+    font-size: 35px;
     margin-bottom: 0px;
     color: #3931AF;
 }
-
+.distance{
+    font-size: 20px;
+    margin-bottom: 0px;
+    color: #C0C0C0;
+}
 .address{
     margin-left: 5px;
     font-weight: 500;
 }
-
 .dropdown{
     margin-top: 15px;
 }
-
+.dropdown2{
+    margin-top: 15px;
+}
 .listName{
     font-size: 20px;
     margin-right: 5px;
 }
-
 .toggle{
     background: none;
     border: none;
@@ -54,50 +72,133 @@
     width: 20px;
     height: 20px;
 }
-
 .toggle:hover{
     opacity: 50%;
 }
-
 .arrows{
     width: 13px;
 }
-
 .list{
     list-style: none;
     margin-top: 8px;
 }
-
 .listItems{
     display: flex;
     justify-content: space-between;
     margin-right: 150px;
 }
-
 .getDirections{
     margin-top: 20px;
 }
 .getDirections:hover{
     opacity: 50%;
 }
-
 .phoneLine{
     display: flex;
     align-items: center;
     margin-top: 15px;
     gap: 10px;
 }
-
 .phoneIcon{
     width: 20px;
     height: 35px;
 }
-
 .phoneNumber{
     font-size: 18px;
     color: black;
 }
-
 .phoneNumber:hover{
     color: #3931AF;
+}
+@media (max-width: 600px){
+    .card{
+        position: fixed;
+        width: 75%;
+        left: 15px;
+        right: 15px;
+        top: 60%;
+        height: 270px;
+        bottom: 0;
+        overflow: scroll;
+        transition: ease 0.3s;
+    }
+    .minimise{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    }
+    .minimised{
+        top: 78%;
+        bottom: 0;
+        height: 100px;
+        overflow: hidden;
+        transition: ease 0.3s;
+    }
+    .minimised .backArrow{
+        display: none;
+    }
+    .minimised .close{
+        display: flex;
+        justify-content: end;
+    }
+    .closeBtns img{
+        width: 15px;
+        height: 15px;
+    }
+    .title{
+        font-size: 24px;
+    }
+    .distance{
+        font-size: 18px;
+    }
+    .address{
+        font-size: 14px;
+    }
+    .listName{
+        font-size: 14px;
+    }
+    .listItems{
+        margin-right: 0px;
+    }
+    .getDirections{
+        height: 30px;
+    }
+    .phoneIcon{
+        width: 12px;
+        height: 20px;
+    }
+    .phoneNumber{
+        font-size: 14px;
+    }
+}
+@media (max-height: 896px) and (max-width: 415px){
+    .card{
+        top: 59%;
+    }
+    .minimised{
+        top: 78%;
+    }
+}
+@media (max-height: 844px) and (max-width: 390px){
+    .card{
+        top: 57%;
+    }
+    .minimised{
+        top: 77%;
+    }
+}
+@media (max-height: 670px) and (max-width: 380px){
+    .card{
+        top: 44%;
+        height: 285px;
+        bottom: 0;
+        transition: ease 0.3s;
+    }
+    .minimised{
+        top: 68%;
+        height: 120px;
+        bottom: 0;
+        overflow: hidden;
+        transition: ease 0.3s;
+    }
 }
