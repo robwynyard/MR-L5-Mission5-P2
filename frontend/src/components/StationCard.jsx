@@ -69,3 +69,4 @@ export default function StationCard({ station }) {
     </div>
   );
 }
+

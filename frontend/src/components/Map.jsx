@@ -49,7 +49,6 @@ export default function Map({
   const selectedFuelKey = getFuelKey();
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap
         mapContainerClassName={styles.mapContainer}
         center={center}
@@ -144,6 +143,5 @@ export default function Map({
             ) : null;
           })}
       </GoogleMap>
-    </LoadScript>
   );
 }
