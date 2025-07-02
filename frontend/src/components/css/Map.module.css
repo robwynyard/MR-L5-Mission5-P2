@@ -1,13 +1,13 @@
 .mapContainer {
     position: relative;
   width: 100%;
- height:750px;
+ height:868px;
 }
 
 @media (max-width: 600px) {
   .mapContainer {
     width: 100%;
-    height: 750px;
+    height: 868px;
   }
 }
 

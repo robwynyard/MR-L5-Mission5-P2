@@ -4,11 +4,12 @@ import getDirectionsIcon from "../assets/atoms/getDirections/Property 1=Subtle.s
 import dropdown from "../assets/header/Dropdown.svg";
 import LocationPin from "../assets/atoms/icons/distance.svg";
 import ForwardArrow from "../assets/atoms/icons/arrow_forward.svg";
-export default function StationCard({ station }) {
+
+export default function StationCard({ station, className = "" }) {
   const isOpen = true;
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${className}`}>
       {/* Name + distance row */}
       <div className={styles.topRow}>
         <h2 className={styles.name}>{station.name}</h2>
@@ -69,4 +70,3 @@ export default function StationCard({ station }) {
     </div>
   );
 }
-

@@ -1,0 +1,79 @@
+.StationCardsContainer {
+  background-color: white;
+  border-radius: 40px;
+  position: absolute;
+  top: 425px;
+  left: 140px;
+  width: 453px;
+  max-height: 533px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none;       
+  -ms-overflow-style: none;    
+  align-items: center;
+  padding-top: 30px;
+  
+}
+
+.StationCardsContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add a border to every StationCard except the last one */
+.StationCard {
+  border-bottom: 2px solid #E2E8F0; 
+  margin-bottom: 0px;
+  padding-bottom: 15px;
+  border-radius: 0;
+  padding-top: 5px;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+
+.StationCard:last-child {
+  border-bottom: none;
+}
+.FirstStationCard {
+  padding-top: 0 !important;
+}
+
+.CardCounter {
+  text-align: left;    /* Align text to the left */
+  width: 100%;         /* Take the full width of the parent */
+  font-size: 16px;
+  font-weight: 400;
+  color: #5b5b5b;
+  padding-left: 98px;
+  padding-top: 5px;
+}
+
+.IconContainer {
+    width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  justify-content: flex-start; /* or space-between if you want them spaced out fully */
+  gap: 18px; /* adjust spacing as needed */
+  padding-left: 98px;
+  
+}
+
+.IconContainer img {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.IconContainer img:hover {
+  opacity: 1;
+}
+
+.CloseIcon {
+    margin-left: 265px;
+    background-color: #e1e1e1;
+    border-radius: 60px;
+    padding: 5px ;
+}
