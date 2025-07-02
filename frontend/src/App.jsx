@@ -38,15 +38,18 @@ function App() {
             element={
               <div className="min-h-screen">
                 <Header />
+                <StationSearchMap/>
                 <StationDetails />
                 <Footer />
               </div>
-            }
-          />
+          }
+        />
         </Routes>
       </Router>
     </LoadScript>
+
   );
 }
 
 export default App;
+
