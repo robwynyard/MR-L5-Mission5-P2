@@ -1,12 +1,23 @@
 .mapContainer {
     position: relative;
   width: 100%;
- height:750px;
+ height:868px;
 }
 
 @media (max-width: 600px) {
   .mapContainer {
     width: 100%;
-    height: 750px;
+    height: 467px;
   }
+}
+
+.PriceTag {
+  font-family: "Calibre";
+  color: #fff;
+  font-weight: 700;
+  padding: 2px 6px;
+  font-size: 16px;
+  transform: translate(-190%, -195%);
+  white-space: nowrap;
+  text-align: center;
 }

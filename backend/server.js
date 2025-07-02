@@ -1,3 +1,5 @@
+// server.js
+
 require('dotenv').config();
 
 const express = require("express");
@@ -21,6 +23,12 @@ app.use(express.json()); // To parse JSON bodies
 // Routes
 const stationRoutes = require("./routes/stations");
 app.use("/api/stations", stationRoutes);
+
+// Cities Route (Fetches The Cities in NZ with Z Stations)
+
+const citiesRouter = require('./routes/cities');
+app.use('/api/cities', citiesRouter);
+
 
 
 
