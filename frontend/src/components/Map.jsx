@@ -15,7 +15,6 @@ export default function Map({ center, zoom }) {
   }, []);
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap
         mapContainerClassName={styles.mapContainer}
         center={center}
@@ -47,6 +46,5 @@ export default function Map({ center, zoom }) {
             ) : null
           )}
       </GoogleMap>
-    </LoadScript>
   );
 }

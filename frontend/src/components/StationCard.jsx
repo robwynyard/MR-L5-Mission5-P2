@@ -5,14 +5,17 @@ import dropdown from "../assets/header/Dropdown.svg";
 import LocationPin from "../assets/atoms/icons/distance.svg";
 import ForwardArrow from "../assets/atoms/icons/arrow_forward.svg";
 export default function StationCard({ station }) {
-  const isOpen = true;
+  const isOpen = true; // You can replace with real logic
+
+  // Extract lat/lng from GeoJSON coordinates
+  const [lng, lat] = station.location.coordinates || [];
 
   return (
     <div className={styles.card}>
       {/* Name + distance row */}
       <div className={styles.topRow}>
-        <h2 className={styles.name}>{station.name}</h2>
-        <span className={styles.distance}>{station.distance} km</span>
+        <h2 className={styles.name}>{station.Name}</h2>
+        <span className={styles.distance}>{station.distance ?? "N/A"} km</span>
       </div>
 
       {/* Location row */}
@@ -22,13 +25,13 @@ export default function StationCard({ station }) {
           alt="location pin"
           className={styles.locationIcon}
         />
-        <p className={styles.location}>{station.location}</p>
+        <p className={styles.location}>{station.Address}</p>
       </div>
 
       {/* Services preview row */}
       <div className={styles.row}>
         <span className={styles.inlineWithIcon}>
-          {station.services?.[0] || "No services listed"}
+          {station.Services?.[0] || "No services listed"}
           <img
             src={dropdown}
             alt="dropdown arrow"
@@ -52,7 +55,7 @@ export default function StationCard({ station }) {
       {/* Get Directions */}
       <div className={styles.directionsRow}>
         <a
-          href={`https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lng}`}
+          href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.directionsBtn}
