@@ -1,84 +1,122 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./css/Search.module.css";
 import myLocation from "../assets/atoms/icons/my_location.svg";
 import showPriceIcon from "../assets/atoms/priceToggle/show_price.svg";
 import hidePriceIcon from "../assets/atoms/priceToggle/hide_price.svg";
 import fuelTypeIcon from "../assets/atoms/dropdown/default_fueltype.svg";
+import ZulFuelIcon from "../assets/atoms/dropdown/91_fuel.svg";
+import PremiumFuelIcon from "../assets/atoms/dropdown/premium_fuel.svg";
+import DieselFuelIcon from "../assets/atoms/dropdown/diesel_fuel.svg";
 import gasIcon from "../assets/atoms/icons/local_gas_station.svg";
+import cityIcon from "../assets/atoms/icons/distance.svg";
 
-// Main Search component
-export default function Search({ onStationSelect }) {
-  // State for user’s search query input
+export default function Search({
+  onStationSelect,
+  showPrice,
+  setShowPrice,
+  selectedFuelType,
+  setSelectedFuelType,
+  resetMap,
+}) {
   const [query, setQuery] = useState("");
-  // State for matching station suggestions as user types
   const [suggestions, setSuggestions] = useState([]);
-  // List of all stations (populated via fetch)
   const [stationList, setStationList] = useState([]);
-  // Toggle to show/hide price section
-  const [showPrice, setShowPrice] = useState(false);
-  // Toggle for showing/hiding fuel type dropdown
+  const [cityList, setCityList] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // State to track which fuel type is selected
-  const [selectedFuelType, setSelectedFuelType] = useState(null);
 
-  // Hardcoded list of fuel types (could come from API)
   const fuelTypes = [
-    { name: "Z91 Unleaded" },
-    { name: "ZX Premium" },
-    { name: "Z Diesel" },
+    { name: "Z91 Unleaded", icon: ZulFuelIcon },
+    { name: "ZX Premium", icon: PremiumFuelIcon },
+    { name: "Z Diesel", icon: DieselFuelIcon },
   ];
 
-  // On mount: fetch list of Auckland Z stations from API
   useEffect(() => {
-    fetch("http://localhost:3000/api/aucklandStations")
-      .then((res) => res.json())
-      .then((data) => {
-        // Add a gas station icon to each station object for UI display
-        const stations = data.map(station => ({
-          ...station,
-          icon: gasIcon,
-        }));
-        setStationList(stations);
-      });
+    axios.get("http://localhost:3000/api/aucklandStations").then((res) => {
+      const stations = res.data.map((station) => ({
+        ...station,
+        icon: gasIcon,
+      }));
+      setStationList(stations);
+    });
+
+    axios.get("http://localhost:3000/api/cities").then((res) => {
+      const cities = res.data.map((city) => ({
+        ...city,
+        icon: cityIcon,
+      }));
+      setCityList(cities);
+    });
   }, []);
 
-  // Clear the search query and suggestions list
   const handleClear = () => {
     setQuery("");
     setSuggestions([]);
+    resetMap && resetMap();
   };
 
-  // On user input: update query and filter stationList for suggestions
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const value = e.target.value;
     setQuery(value);
 
     if (value.length > 0) {
-      // Filter stations by name, case-insensitive match
-      const matches = stationList.filter((station) =>
+      const stationMatches = stationList.filter((station) =>
         station.Name.toLowerCase().includes(value.toLowerCase())
       );
-      setSuggestions(matches);
+
+      const cityMatches = cityList.filter((city) =>
+        city.Name.toLowerCase().includes(value.toLowerCase())
+      );
+
+      const combined = [...stationMatches, ...cityMatches];
+      setSuggestions(combined);
+
+      if (combined.length === 0) {
+        try {
+          const response = await axios.get(
+            `https://maps.googleapis.com/maps/api/geocode/json`,
+            {
+              params: {
+                address: value,
+                key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+              },
+            }
+          );
+          const results = response.data.results;
+          if (results.length > 0) {
+            const location = results[0].geometry.location;
+            const dummyStation = {
+              Name: results[0].formatted_address,
+              location: {
+                coordinates: [location.lng, location.lat],
+              },
+              icon: gasIcon,
+            };
+            if (onStationSelect) {
+              onStationSelect(dummyStation);
+            }
+          }
+        } catch (error) {
+          console.error("Geocoding failed:", error);
+        }
+      }
     } else {
       setSuggestions([]);
     }
   };
 
-  // When a user clicks a suggestion, update input and notify parent
-  const handleSelect = (station) => {
-    setQuery(station.Name);
+  const handleSelect = (item) => {
+    setQuery(item.Name);
     setSuggestions([]);
     if (onStationSelect) {
-      onStationSelect(station); // Pass selected station object to parent
+      const itemWithZoom = item.zoom ? { ...item, zoom: item.zoom } : item;
+      onStationSelect(itemWithZoom);
     }
   };
 
   return (
     <div className={styles.Container}>
-      {/* Heading */}
       <p className={styles.SearchHeading}>Search Z stations</p>
-
-      {/* Search input with clear button and suggestion dropdown */}
       <div className={styles.InputWrapper}>
         <input
           type="text"
@@ -87,7 +125,6 @@ export default function Search({ onStationSelect }) {
           value={query}
           onChange={handleChange}
         />
-        {/* Show clear button when there is input */}
         {query && (
           <button
             className={styles.ClearButton}
@@ -97,28 +134,26 @@ export default function Search({ onStationSelect }) {
             ✕
           </button>
         )}
-        {/* Suggestions dropdown, max 5 visible */}
         {suggestions.length > 0 && (
           <ul className={styles.SuggestionList}>
-            {suggestions.slice(0, 5).map((station, index) => (
+            {suggestions.slice(0, 5).map((item, index) => (
               <li
                 key={index}
                 className={styles.SuggestionItem}
-                onClick={() => handleSelect(station)}
+                onClick={() => handleSelect(item)}
               >
                 <img
-                  src={station.icon}
+                  src={item.icon || gasIcon}
                   alt=""
                   className={styles.SuggestionIcon}
                 />
-                {station.Name}
+                {item.Name}
               </li>
             ))}
           </ul>
         )}
       </div>
 
-      {/* My Location prompt (currently just UI, not functional here) */}
       <p className={styles.MyLocation}>
         <img
           src={myLocation}
@@ -128,15 +163,12 @@ export default function Search({ onStationSelect }) {
         Use my current location
       </p>
 
-      {/* Price toggle row (show/hide price and fuel type selector) */}
       <div className={`${styles.PriceToggleRow} ${showPrice ? styles.expanded : ""}`}>
-        {/* Price toggle button, switches icon and toggles price section */}
         <div
           className={styles.PriceToggleContainer}
           onClick={() => setShowPrice(!showPrice)}
         >
           <div className={styles.ToggleIconWrapper}>
-            {/* Show price icon when collapsed, hide price icon when expanded */}
             <img
               src={showPriceIcon}
               alt="Show Price"
@@ -150,27 +182,25 @@ export default function Search({ onStationSelect }) {
           </div>
         </div>
 
-        {/* Fuel type dropdown (only visible when price toggle is on) */}
         <div
-          className={`${styles.FuelTypeContainer} ${
-            showPrice ? styles.visible : styles.hidden}`}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className={`${styles.FuelTypeContainer} ${showPrice ? styles.visible : styles.hidden}`}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
           <img
-            src={fuelTypeIcon}
+            src={selectedFuelType?.icon || fuelTypeIcon}
             alt="Fuel Type"
-            className={styles.FuelTypeIcon}
+            className={`${styles.FuelTypeIcon} ${selectedFuelType?.name === "Z Diesel" ? styles.DieselIconShift : ""}`}
           />
-          {/* Dropdown menu with fuel types */}
           {isDropdownOpen && (
             <ul className={styles.FuelDropdown}>
               {fuelTypes.map((fuel, index) => (
                 <li
                   key={index}
-                  className={styles.FuelOption}
-                  onClick={() => {
-                    setSelectedFuelType(fuel.name); // Select fuel type
-                    setIsDropdownOpen(false);        // Close dropdown
+                  className={styles.FuelTypeOption}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedFuelType(fuel);
+                    setIsDropdownOpen(false);
                   }}
                 >
                   {fuel.name}
