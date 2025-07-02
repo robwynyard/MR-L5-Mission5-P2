@@ -10,7 +10,14 @@ import pinIcon from "../assets/atoms/station_pin.svg";
 import fuelPriceIcon from "../assets/atoms/fuelPins/fuel_pin_blank.svg";
 import cityMarker from "../assets/atoms/city_marker.svg";
 
-export default function Map({ center, zoom, showPrice, selectedFuelType, mapRef }) {
+export default function Map({
+  center,
+  zoom,
+  showPrice,
+  selectedFuelType,
+  mapRef,
+  onBoundsChanged, // <-- Add this prop!
+}) {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapInstance, setMapInstance] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(zoom);
@@ -51,7 +58,7 @@ export default function Map({ center, zoom, showPrice, selectedFuelType, mapRef 
           setMapLoaded(true);
           setMapInstance(map);
           setCurrentZoom(map.getZoom());
-          // FIX: Set mapRef.current!
+          // Set mapRef.current!
           if (mapRef) {
             mapRef.current = map;
           }
@@ -59,6 +66,21 @@ export default function Map({ center, zoom, showPrice, selectedFuelType, mapRef 
         onZoomChanged={() => {
           if (mapInstance) {
             setCurrentZoom(mapInstance.getZoom());
+          }
+        }}
+        onIdle={() => {
+          if (mapRef && mapRef.current && onBoundsChanged) {
+            const bounds = mapRef.current.getBounds();
+            if (bounds) {
+              const ne = bounds.getNorthEast();
+              const sw = bounds.getSouthWest();
+              onBoundsChanged({
+                north: ne.lat(),
+                east: ne.lng(),
+                south: sw.lat(),
+                west: sw.lng(),
+              });
+            }
           }
         }}
         options={{
