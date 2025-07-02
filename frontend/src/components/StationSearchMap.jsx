@@ -13,7 +13,6 @@ import DieselFuelIcon from "../assets/atoms/dropdown/diesel_fuel.svg";
 const initialCenter = { lat: -41.53379864953193, lng: 173.78365868976863 };
 const initialZoom = 5.7;
 
-// Define your fuel types here so you can use them below
 const fuelTypes = [
   { name: "Z91 Unleaded", icon: ZulFuelIcon },
   { name: "ZX Premium", icon: PremiumFuelIcon },
@@ -29,10 +28,13 @@ export default function StationSearchMap() {
   const [visibleStations, setVisibleStations] = useState([]);
   const [selectedStation, setSelectedStation] = useState(null);
   const [showCards, setShowCards] = useState(true);
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+
+  // Responsive check
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 600;
 
   const mapRef = useRef(null);
 
-  // Default fuel type to 91 when toggling showPrice ON and no type is selected
   useEffect(() => {
     if (showPrice && (!selectedFuelType || !selectedFuelType.name)) {
       setSelectedFuelType(fuelTypes[0]);
@@ -40,14 +42,12 @@ export default function StationSearchMap() {
     // eslint-disable-next-line
   }, [showPrice]);
 
-  // Fetch stations on mount
   useEffect(() => {
     fetch("http://localhost:3000/api/aucklandStations")
       .then((res) => res.json())
       .then((data) => setStations(data));
   }, []);
 
-  // Handle selecting a station from the search suggestions
   const handleStationSelect = (station) => {
     setSelectedStation(station);
     if (
@@ -65,9 +65,9 @@ export default function StationSearchMap() {
       setMapCenter(newCenter);
       setZoom(station.zoom || 15);
     }
+    if (isMobile) setIsMobileSheetOpen(true);
   };
 
-  // Handle map viewport change to update visible stations
   const handleBoundsChanged = (bounds) => {
     if (!stations.length) return;
     const filtered = stations.filter((station) => {
@@ -112,10 +112,30 @@ export default function StationSearchMap() {
         onBoundsChanged={handleBoundsChanged}
         setShowCards={setShowCards}
       />
-
-      {/* STATION CARDS */}
+  
+      {/* STATION CARDS - Responsive Sheet for Mobile */}
       {showCards && visibleStations.length > 0 && (
-        <div className={styles.StationCardsContainer}>
+        <div
+          className={`${styles.StationCardsContainer} ${
+            isMobile
+              ? isMobileSheetOpen
+                ? styles.expanded
+                : styles.minimized
+              : ""
+          }`}
+        >
+          {/* Drag handle always at very top */}
+          {isMobile && (
+            <div
+              className={styles.DragHandle}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMobileSheetOpen((v) => !v);
+              }}
+              title={isMobileSheetOpen ? "Minimize results" : "Show results"}
+              aria-label={isMobileSheetOpen ? "Minimize results" : "Show results"}
+            />
+          )}
           <div className={styles.IconContainer}>
             <img src={FilterIcon} alt="Filter Icon" />
             <img src={SortIcon} alt="Sort Icon" />
@@ -129,29 +149,30 @@ export default function StationSearchMap() {
           <div className={styles.CardCounter}>
             <p>Showing {visibleStations.length} Results</p>
           </div>
-          {visibleStations.map((station, idx) => (
-            <StationCard
-              key={station._id}
-              station={mapStationToCard(station)}
-              className={
-                idx === 0
-                  ? `${styles.StationCard} ${styles.FirstStationCard}`
-                  : styles.StationCard
-              }
-            />
-          ))}
+          {/* Show station cards only if expanded or on desktop */}
+          {(isMobileSheetOpen || !isMobile) &&
+            visibleStations.map((station, idx) => (
+              <StationCard
+                key={station._id}
+                station={mapStationToCard(station)}
+                className={
+                  idx === 0
+                    ? `${styles.StationCard} ${styles.FirstStationCard}`
+                    : styles.StationCard
+                }
+              />
+            ))}
         </div>
       )}
     </>
   );
 }
 
-// Helper: shape your station object to match StationCard props
 function mapStationToCard(station) {
   if (!station) return {};
   return {
     name: station.Name,
-    distance: station.distance || "", // Add your distance logic if needed
+    distance: station.distance || "",
     location: station.Address || station.Name,
     services: station.services,
     lat: station.location?.coordinates?.[1],
