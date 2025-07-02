@@ -5,44 +5,51 @@ const haversine = require("../utils/haversine");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const { fuel, open, lat, lng } = req.query;
+  const { fuel, open, lat, lng, location } = req.query;
 
   try {
-    // Fetch all stations from Atlas as Mongoose docs
     let results = await Station.find();
+    results = results.map((station) => station.toObject());
 
-    // Convert Mongoose docs to plain JS objects for easy manipulation
-    results = results.map(station => station.toObject());
-
-    // Filter by fuel type if specified
     if (fuel) {
-      results = results.filter(station => station.fuelPrices.hasOwnProperty(fuel));
+      results = results.filter((station) =>
+        station.fuelPrices.hasOwnProperty(fuel)
+      );
     }
 
-    // Calculate distance if lat/lng provided
+    // Filter by location (name or address)
+    if (location) {
+      const lowerLocation = location.toLowerCase();
+      results = results.filter(
+        (station) =>
+          (station.Name &&
+            station.Name.toLowerCase().includes(lowerLocation)) ||
+          (station.Address &&
+            station.Address.toLowerCase().includes(lowerLocation))
+      );
+    }
+
     if (lat && lng) {
       const userLat = parseFloat(lat);
       const userLng = parseFloat(lng);
 
-      results = results.map(station => {
+      results = results.map((station) => {
         const distance = haversine(
           userLat,
           userLng,
-          station.location?.lat ?? 0,
-          station.location?.lng ?? 0
+          station.location?.coordinates[1] ?? 0, // lat
+          station.location?.coordinates[0] ?? 0 // lng
         );
         return { ...station, distance };
       });
 
-      // Sort by distance ascending
       results.sort((a, b) => a.distance - b.distance);
     }
 
-    // Filter by open status (mocked)
     if (open === "true") {
-      results = results.map(station => ({ ...station, isOpen: true }));
+      results = results.map((station) => ({ ...station, isOpen: true }));
     } else {
-      results = results.map(station => ({ ...station, isOpen: false }));
+      results = results.map((station) => ({ ...station, isOpen: false }));
     }
 
     res.json(results);
@@ -51,25 +58,5 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch stations" });
   }
 });
-
-router.get("/:id", async (req, res) => {
-  try{
-
-    const id = parseInt(req.params.id)
-    if(isNaN(id)) return res.status(400).json({ message: "Invalid station ID" })
-
-    const station = await Station.findOne({ ID: id })
-
-    if(!station){
-      console.log("No match found for ID:", id);
-      return res.status(404).json({ message: "Station not found" })
-    }
-
-    res.json(station)
-  } catch (err) {
-    console.error("Failed to fetch station:", err)
-    res.status(500).json({ error: "Failed to fetch station" });
-  }
-})
 
 module.exports = router;
