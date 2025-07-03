@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./StationCard.module.css";
 import getDirectionsIcon from "../assets/atoms/getDirections/Property 1=Subtle.svg";
 import dropdown from "../assets/header/Dropdown.svg";
@@ -6,6 +7,9 @@ import LocationPin from "../assets/atoms/icons/distance.svg";
 import ForwardArrow from "../assets/atoms/icons/arrow_forward.svg";
 
 export default function StationCard({ station, className = "" }) {
+
+  const navigate = useNavigate();
+
   const isOpen = true;
 
   return (
@@ -61,11 +65,13 @@ export default function StationCard({ station, className = "" }) {
           <img src={getDirectionsIcon} alt="Get directions" />
         </a>
 
-        <img
-          src={ForwardArrow}
-          alt="forward arrow"
-          className={styles.forwardArrow}
-        />
+        <button className={styles.forwardBtn} onClick={()=> navigate(`/station/${station.id}`)}>
+          <img
+            src={ForwardArrow}
+            alt="forward arrow"
+            className={styles.forwardArrow}
+          /> 
+        </button>    
       </div>
     </div>
   );

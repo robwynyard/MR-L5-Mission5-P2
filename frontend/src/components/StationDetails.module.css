@@ -43,7 +43,7 @@
 .title{
     font-size: 35px;
     margin-bottom: 0px;
-    color: #3931AF;
+    color: var(--color-secondary);
 }
 .distance{
     font-size: 20px;
