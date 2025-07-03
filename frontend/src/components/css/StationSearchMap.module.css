@@ -125,3 +125,83 @@
   }
 
 }
+
+/* FilterPanel styles */
+
+.FilterPanelStyled {
+  z-index: 10;
+  position: relative;
+  margin: auto;
+  width: 80%;
+}
+
+.FilterHeader {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.PopularFilters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.Pill {
+  padding: 6px 12px;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.SelectedPill {
+  padding: 6px 12px;
+  background-color: #1e0f50;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+
+.DropdownsStyled label {
+  display: block;
+  margin: 12px 0 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.DropdownsStyled select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.ButtonRowStyled {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.CancelBtn {
+  background: transparent;
+  border: 1px solid #aaa;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.ApplyBtn {
+  background-color: #1e0f50;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+}
