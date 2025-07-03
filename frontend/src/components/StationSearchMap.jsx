@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Search from "./Search";
 import Map from "./Map";
 import StationCard from "./StationCard";
@@ -29,6 +30,10 @@ export default function StationSearchMap() {
   const [selectedStation, setSelectedStation] = useState(null);
   const [showCards, setShowCards] = useState(true);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+
+  const location = useLocation()
+
+  const isDetailsPage = location.pathname.startsWith("/station/");
 
   // Responsive check
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 600;
@@ -114,7 +119,7 @@ export default function StationSearchMap() {
       />
   
       {/* STATION CARDS - Responsive Sheet for Mobile */}
-      {showCards && visibleStations.length > 0 && (
+      {!isDetailsPage && showCards && visibleStations.length > 0 && (
         <div
           className={`${styles.StationCardsContainer} ${
             isMobile
@@ -171,6 +176,7 @@ export default function StationSearchMap() {
 function mapStationToCard(station) {
   if (!station) return {};
   return {
+    id: station.ID,
     name: station.Name,
     distance: station.distance || "",
     location: station.Address || station.Name,

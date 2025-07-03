@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import haversine from "../utils/haversine"
 import styles from "./StationDetails.module.css";
@@ -16,6 +16,8 @@ export default function StationDetails() {
   const [error, setError] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null)
   const [minimise, setMinimise] = useState(false)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchStation() {
@@ -71,7 +73,7 @@ export default function StationDetails() {
       </div>
 
       <div className={styles.close}>
-        <button className={`${styles.closeBtns} ${styles.backArrow}`}>
+        <button className={`${styles.closeBtns} ${styles.backArrow}`} onClick={() => navigate(-1)}>
           <img src={backArrow} alt="back arrow" />
         </button>
         <button className={styles.closeBtns}>

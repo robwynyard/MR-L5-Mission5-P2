@@ -114,6 +114,12 @@
   text-decoration: none;
 }
 
+.forwardBtn{
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 .forwardArrow {
   width: 16px;
   height: 16px;
