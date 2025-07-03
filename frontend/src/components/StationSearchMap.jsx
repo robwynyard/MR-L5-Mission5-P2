@@ -35,6 +35,7 @@ export default function StationSearchMap() {
   const [selectedService, setSelectedService] = useState("All");
   const [tempSelectedService, setTempSelectedService] = useState("All");
   const [filtersApplied, setFiltersApplied] = useState(false);
+  const [hasMapInteracted, setHasMapInteracted] = useState(false);
 
   const location = useLocation();
   const isDetailsPage = location.pathname.startsWith("/station/");
@@ -68,28 +69,26 @@ export default function StationSearchMap() {
 
   const handleStationSelect = (station) => {
     setSelectedStation(station);
-    if (
-      station.location &&
-      station.location.coordinates &&
-      station.location.coordinates.length === 2 &&
-      mapRef.current
-    ) {
+    setVisibleStations([station]);
+    if (mapRef.current) {
       const newCenter = {
         lat: station.location.coordinates[1],
         lng: station.location.coordinates[0],
       };
       mapRef.current.panTo(newCenter);
-      mapRef.current.setZoom(station.zoom || 15);
+      mapRef.current.setZoom(15);
       setMapCenter(newCenter);
-      setZoom(station.zoom || 15);
+      setZoom(15);
     }
-    if (isMobile) setIsMobileSheetOpen(true);
   };
 
   const handleBoundsChanged = (bounds) => {
     if (!stations.length || filtersApplied) return;
+
+    setHasMapInteracted(true);
+
     const filtered = stations.filter((station) => {
-      if (!station.location || !station.location.coordinates) return false;
+      if (!station.location?.coordinates) return false;
       const [lng, lat] = station.location.coordinates;
       return (
         lat <= bounds.north &&
@@ -98,6 +97,7 @@ export default function StationSearchMap() {
         lng >= bounds.west
       );
     });
+
     setVisibleStations(filtered);
   };
 
@@ -131,7 +131,7 @@ export default function StationSearchMap() {
         setShowCards={setShowCards}
       />
 
-      {!isDetailsPage && showCards && (
+      {!isDetailsPage && showCards && hasMapInteracted && (
         <div
           className={`${styles.StationCardsContainer} ${
             isMobile
@@ -149,7 +149,9 @@ export default function StationSearchMap() {
                 setIsMobileSheetOpen((v) => !v);
               }}
               title={isMobileSheetOpen ? "Minimize results" : "Show results"}
-              aria-label={isMobileSheetOpen ? "Minimize results" : "Show results"}
+              aria-label={
+                isMobileSheetOpen ? "Minimize results" : "Show results"
+              }
             />
           )}
           <div className={styles.IconContainer}>
@@ -172,7 +174,9 @@ export default function StationSearchMap() {
             <div className={styles.FilterPanelStyled}>
               <h2 className={styles.FilterHeader}>Filter</h2>
               <div className={styles.PopularFilters}>
-                <span className={styles.SelectedPill}>{tempSelectedService} ✕</span>
+                <span className={styles.SelectedPill}>
+                  {tempSelectedService} ✕
+                </span>
                 <span className={styles.Pill}>Open now</span>
                 <span className={styles.Pill}>91 Unleaded</span>
               </div>
@@ -250,7 +254,7 @@ function mapStationToCard(station) {
   return {
     id: station.ID,
     name: station.Name,
-    distance: station.distance || "",
+    distance: station.distance ? `${station.distance}` : "",
     location: station.Address || station.Name,
     services: station.services || station.Services || [],
     lat: station.location?.coordinates?.[1],
