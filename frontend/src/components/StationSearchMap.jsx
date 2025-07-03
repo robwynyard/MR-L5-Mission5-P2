@@ -27,24 +27,24 @@ export default function StationSearchMap() {
   const [selectedFuelType, setSelectedFuelType] = useState(null);
   const [stations, setStations] = useState([]);
   const [visibleStations, setVisibleStations] = useState([]);
+  const [filteredStations, setFilteredStations] = useState([]);
   const [selectedStation, setSelectedStation] = useState(null);
   const [showCards, setShowCards] = useState(true);
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState("All");
+  const [tempSelectedService, setTempSelectedService] = useState("All");
+  const [filtersApplied, setFiltersApplied] = useState(false);
 
-  const location = useLocation()
-
+  const location = useLocation();
   const isDetailsPage = location.pathname.startsWith("/station/");
-
-  // Responsive check
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 600;
-
   const mapRef = useRef(null);
 
   useEffect(() => {
     if (showPrice && (!selectedFuelType || !selectedFuelType.name)) {
       setSelectedFuelType(fuelTypes[0]);
     }
-    // eslint-disable-next-line
   }, [showPrice]);
 
   useEffect(() => {
@@ -52,6 +52,19 @@ export default function StationSearchMap() {
       .then((res) => res.json())
       .then((data) => setStations(data));
   }, []);
+
+  useEffect(() => {
+    if (!filtersApplied || selectedService === "All") {
+      setVisibleStations(stations);
+    } else {
+      const filtered = stations.filter((s) =>
+        s.Services?.some(
+          (svc) => svc.toLowerCase() === selectedService.toLowerCase()
+        )
+      );
+      setVisibleStations(filtered);
+    }
+  }, [selectedService, stations, filtersApplied]);
 
   const handleStationSelect = (station) => {
     setSelectedStation(station);
@@ -74,7 +87,7 @@ export default function StationSearchMap() {
   };
 
   const handleBoundsChanged = (bounds) => {
-    if (!stations.length) return;
+    if (!stations.length || filtersApplied) return;
     const filtered = stations.filter((station) => {
       if (!station.location || !station.location.coordinates) return false;
       const [lng, lat] = station.location.coordinates;
@@ -117,9 +130,8 @@ export default function StationSearchMap() {
         onBoundsChanged={handleBoundsChanged}
         setShowCards={setShowCards}
       />
-  
-      {/* STATION CARDS - Responsive Sheet for Mobile */}
-      {!isDetailsPage && showCards && visibleStations.length > 0 && (
+
+      {!isDetailsPage && showCards && (
         <div
           className={`${styles.StationCardsContainer} ${
             isMobile
@@ -129,7 +141,6 @@ export default function StationSearchMap() {
               : ""
           }`}
         >
-          {/* Drag handle always at very top */}
           {isMobile && (
             <div
               className={styles.DragHandle}
@@ -142,7 +153,12 @@ export default function StationSearchMap() {
             />
           )}
           <div className={styles.IconContainer}>
-            <img src={FilterIcon} alt="Filter Icon" />
+            <img
+              src={FilterIcon}
+              alt="Filter Icon"
+              onClick={() => setIsFilterOpen(true)}
+              style={{ cursor: "pointer" }}
+            />
             <img src={SortIcon} alt="Sort Icon" />
             <img
               src={CloseIcon}
@@ -151,10 +167,66 @@ export default function StationSearchMap() {
               onClick={() => setShowCards(false)}
             />
           </div>
+
+          {isFilterOpen && (
+            <div className={styles.FilterPanelStyled}>
+              <h2 className={styles.FilterHeader}>Filter</h2>
+              <div className={styles.PopularFilters}>
+                <span className={styles.SelectedPill}>{tempSelectedService} ✕</span>
+                <span className={styles.Pill}>Open now</span>
+                <span className={styles.Pill}>91 Unleaded</span>
+              </div>
+              <div className={styles.DropdownsStyled}>
+                <label>Services</label>
+                <select
+                  value={tempSelectedService}
+                  onChange={(e) => setTempSelectedService(e.target.value)}
+                >
+                  <option value="All">All</option>
+                  <option value="EV charging">EV charging</option>
+                  <option value="Car wash">Car wash</option>
+                  <option value="Bathrooms">Bathrooms</option>
+                  <option value="Trailer hire">Trailer hire</option>
+                </select>
+                <label>Station type</label>
+                <select disabled>
+                  <option>Select station type</option>
+                </select>
+                <label>Fuel type</label>
+                <select>
+                  <option>91 Unleaded</option>
+                  <option>Premium</option>
+                  <option>Diesel</option>
+                </select>
+                <div className={styles.ButtonRowStyled}>
+                  <button
+                    className={styles.CancelBtn}
+                    onClick={() => {
+                      setIsFilterOpen(false);
+                      setFiltersApplied(false);
+                      setTempSelectedService(selectedService);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className={styles.ApplyBtn}
+                    onClick={() => {
+                      setIsFilterOpen(false);
+                      setFiltersApplied(true);
+                      setSelectedService(tempSelectedService);
+                    }}
+                  >
+                    Apply
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className={styles.CardCounter}>
             <p>Showing {visibleStations.length} Results</p>
           </div>
-          {/* Show station cards only if expanded or on desktop */}
           {(isMobileSheetOpen || !isMobile) &&
             visibleStations.map((station, idx) => (
               <StationCard
@@ -180,7 +252,7 @@ function mapStationToCard(station) {
     name: station.Name,
     distance: station.distance || "",
     location: station.Address || station.Name,
-    services: station.services,
+    services: station.services || station.Services || [],
     lat: station.location?.coordinates?.[1],
     lng: station.location?.coordinates?.[0],
   };
