@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import haversine from "../utils/haversine"
+import haversine from "../utils/haversine";
 import styles from "./StationDetails.module.css";
 import backArrow from "../assets/atoms/icons/arrow_back.svg";
 import close from "../assets/atoms/icons/close.svg";
 import pin from "../assets/atoms/icons/distance.svg";
-import openedDownArrow from "../assets/atoms/icons/keyboard_arrow_down.svg";
-import closedDownArrow from "../assets/atoms/icons/keyboard_arrow_down-1.svg";
+import closedDownArrow from "../assets/atoms/icons/keyboard_arrow_down.svg";
+import openedDownArrow from "../assets/atoms/icons/keyboard_arrow_down-1.svg";
 import getDirections from "../assets/atoms/getDirections/Property 1=Strong.svg";
 import phone from "../assets/atoms/icons/phone-solid.svg";
 
@@ -14,10 +14,10 @@ export default function StationDetails() {
   const { id } = useParams();
   const [station, setStation] = useState(null);
   const [error, setError] = useState(null);
-  const [openDropdown, setOpenDropdown] = useState(null)
-  const [minimise, setMinimise] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [minimise, setMinimise] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchStation() {
@@ -30,20 +30,20 @@ export default function StationDetails() {
 
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            const {latitude: usersLat, longitude: usersLng} = pos.coords
+            const { latitude: usersLat, longitude: usersLng } = pos.coords;
             const distance = haversine(
               usersLat,
               usersLng,
               data.location.coordinates[1],
-              data.location.coordinates[0],
-            )
-            setStation({...data, distance})
+              data.location.coordinates[0]
+            );
+            setStation({ ...data, distance });
           },
           (err) => {
-            console.error("Error getting location", err)
-            setStation(data)
+            console.error("Error getting location", err);
+            setStation(data);
           }
-        )
+        );
       } catch (err) {
         setError(err.message);
       }
@@ -55,25 +55,29 @@ export default function StationDetails() {
   if (error) return <div>Error: {error}</div>;
   if (!station) return <div>Loading...</div>;
 
-  const toggleMinimise = () => setMinimise(prev => !prev)
-  
+  const toggleMinimise = () => setMinimise((prev) => !prev);
 
   const toggleHours = () => {
-    setOpenDropdown(prev => (prev === "hours" ? null : "hours"));
-  } 
+    setOpenDropdown((prev) => (prev === "hours" ? null : "hours"));
+  };
   const toggleServices = () => {
-    setOpenDropdown(prev => (prev === "services" ? null : "services"));
-  } 
+    setOpenDropdown((prev) => (prev === "services" ? null : "services"));
+  };
 
   return (
     <div className={`${styles.card} ${minimise ? styles.minimised : ""}`}>
-
       <div className={styles.minimise}>
-        <button className={styles.minimiseBtn} onClick={toggleMinimise}></button>
+        <button
+          className={styles.minimiseBtn}
+          onClick={toggleMinimise}
+        ></button>
       </div>
 
       <div className={styles.close}>
-        <button className={`${styles.closeBtns} ${styles.backArrow}`} onClick={() => navigate(-1)}>
+        <button
+          className={`${styles.closeBtns} ${styles.backArrow}`}
+          onClick={() => navigate(-1)}
+        >
           <img src={backArrow} alt="back arrow" />
         </button>
         <button className={styles.closeBtns}>
@@ -83,7 +87,7 @@ export default function StationDetails() {
 
       <div className={styles.titleLine}>
         <h1 className={styles.title}>{station.Name}</h1>
-        {station.distance != null &&(
+        {station.distance != null && (
           <p className={styles.distance}>{station.distance} km</p>
         )}
       </div>
@@ -98,11 +102,11 @@ export default function StationDetails() {
         <button className={styles.toggle} onClick={toggleHours}>
           <img
             className={styles.arrows}
-            src={openDropdown === "hours" ? closedDownArrow : openedDownArrow}
+            src={openDropdown === "hours" ? openedDownArrow : closedDownArrow}
             alt="dropdown arrows"
           />
         </button>
-        {openDropdown ==="hours" && (
+        {openDropdown === "hours" && (
           <ul className={styles.list}>
             {Object.entries(station.openingHours).map(([day, hours]) => (
               <li className={styles.listItems} key={day}>
@@ -119,7 +123,8 @@ export default function StationDetails() {
         <button className={styles.toggle} onClick={toggleServices}>
           <img
             className={styles.arrows}
-            src={openDropdown === "services" ? closedDownArrow : openedDownArrow}
+            src={
+              openDropdown === "services" ? openedDownArrow : closedDownArrow}
             alt="dropdown arrows"
           />
         </button>
